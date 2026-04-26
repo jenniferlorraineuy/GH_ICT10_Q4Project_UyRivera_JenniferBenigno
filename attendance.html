@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://pyscript.net/releases/2026.3.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2026.3.1/core.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <py-config>
+        packages = ["numpy", "matplotlib"]
+    </py-config>
+    <title>Attendance Tracker</title>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a class="brand" href="index.html">ICT10 <span>Sapphire</span></a>
+        <div class="nav-links">
+            <a class="nav-link" href="index.html">Home</a>
+            <a class="nav-link" href="classmates.html">Classmates</a>
+            <a class="nav-link active" href="attendance.html">Attendance</a>
+            <a class="nav-link" href="photos.html">Photos</a>
+        </div>
+    </nav>
+
+    <div class="page">
+
+        <div class="page-heading">
+            <h2>Attendance Tracker</h2>
+            <span>BSIT 2-A</span>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-box">
+                <span class="stat-val" id="stat-total">0</span>
+                <span class="stat-lbl">Total Absences</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-val" id="stat-logged">0</span>
+                <span class="stat-lbl">Days Logged</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-val" id="stat-avg">—</span>
+                <span class="stat-lbl">Daily Average</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-val" id="stat-peak">—</span>
+                <span class="stat-lbl">Peak Day</span>
+            </div>
+        </div>
+
+        <div class="form-card">
+            <p class="form-label">Log Absences</p>
+            <select id="day-select">
+                <option>Monday</option>
+                <option>Tuesday</option>
+                <option>Wednesday</option>
+                <option>Thursday</option>
+                <option>Friday</option>
+            </select>
+            <input type="number" id="absence-input" min="0" placeholder="Number of absences">
+            <button class="btn-warm" py-click="log_absence">Log Absence</button>
+            <div id="status-message" class="status"></div>
+        </div>
+
+        <div class="progress-wrap">
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-bar"></div>
+            </div>
+            <p class="progress-label" id="progress-label">0 / 5 days logged</p>
+        </div>
+
+        <div class="table-wrap">
+            <div class="table-header">Weekly Log</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Absences</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="summary-body"></tbody>
+            </table>
+        </div>
+
+        <div class="graph-wrap">
+            <div class="table-header">
+                <span>Absence Graph</span>
+                <button class="btn-secondary" py-click="show_graph">Generate</button>
+            </div>
+            <div id="graph-output"></div>
+        </div>
+
+    </div>
+
+    <footer class="footer">
+        <div class="footer-left">Made with love by <span>Uy, Jennifer & Rivera, Benigno</span></div>
+        <div class="footer-right">ICT10 · 2025–2026</div>
+    </footer>
+
+    <py-script src="attendance/main.py"></py-script>
+
+</body>
+</html>
