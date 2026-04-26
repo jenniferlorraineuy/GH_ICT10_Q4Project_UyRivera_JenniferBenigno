@@ -1,36 +1,47 @@
-from pyscript import document
+from pyscript import display, document
 
-photos = [
-    {"src": "photos/img1.jpg", "caption": "CAT Activity"},
-    {"src": "photos/img2.jpg", "caption": "Christmas Party"},
-    {"src": "photos/img3.jpg", "caption": "Intramurals"},
+
+class Classmate:
+    def __init__(self, name, section, favorite_subject):
+        self.name = name
+        self.section = section
+        self.favorite_subject = favorite_subject
+
+    def introduce(self):
+        return f"Hi! I'm {self.name}. I belong to {self.section}, and my favorite subject is {self.favorite_subject}."
+
+classmates = [
+    Classmate('Anakin Batac', 'Sapphire', 'English'),
+    Classmate('Sittie Macabago', 'Sapphire', 'English'),
+    Classmate('Selena Galvez', 'Sapphire', 'Math'),
+    Classmate('Ishan Shrestha', 'Sapphire', 'Social Studies'),
+    Classmate('Seth Ngo', 'Sapphire', 'Math'),
+    Classmate('Vito De Guzman', 'Sapphire', 'Social Studies'),
 ]
 
-gallery = document.getElementById("photo-gallery")
+def show_list(e):
+    output = document.getElementById("output")
+    output.innerHTML = ""
+    for cm in classmates:
+        card = document.createElement("div")
+        card.className = "classmate-card"
+        card.innerHTML = cm.introduce()
+        output.appendChild(card)
 
-gallery = document.getElementById("photo-gallery")
+def add_classmate(e):
+    name = document.getElementById("name").value
+    section = document.getElementById("section").value
+    subject = document.getElementById("favorite_subject").value
 
-gallery.style.display = "flex"
-gallery.style.flexDirection = "column"
-gallery.style.gap = "24px"
-gallery.style.alignItems = "center"
+    if name == "" or section == "" or subject == "":
+        document.getElementById("output").innerHTML = "<p> Fill all fields. </p>"
+        return
 
-for photo in photos:
-    card = document.createElement("div")
-    card.className = "photo-card"
+    new_classmate = Classmate(name, section, subject)
+    classmates.append(new_classmate)
 
-    img = document.createElement("img")
-    img.src = photo["src"]
-    img.alt = photo["caption"]
-    img.style.width = "400px"
-    img.style.height = "250px"
-    img.style.objectFit = "cover"
-    img.style.borderRadius = "8px"
+    document.getElementById("name").value = ""
+    document.getElementById("section").value = ""
+    document.getElementById("favorite_subject").value = ""
 
-    caption = document.createElement("p")
-    caption.className = "photo-caption"
-    caption.textContent = photo["caption"]
-
-    card.appendChild(img)
-    card.appendChild(caption)
-    gallery.appendChild(card)
+    show_list(None)
