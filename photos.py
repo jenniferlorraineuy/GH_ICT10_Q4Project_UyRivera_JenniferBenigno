@@ -1,9 +1,9 @@
 from pyscript import document
 
 photos = [
-    {"src": "photos/img1.jpg", "caption": "CAT Activity"},
-    {"src": "photos/img2.jpg", "caption": "Christmas Party"},
-    {"src": "photos/img3.jpg", "caption": "Intramurals"},
+    {"src": "img1.jpg", "caption": "CAT Activity"},
+    {"src": "img2.jpg", "caption": "Christmas Party"},
+    {"src": "img3.jpg", "caption": "Intramurals"},
 ]
 
 gallery = document.getElementById("photo-gallery")
