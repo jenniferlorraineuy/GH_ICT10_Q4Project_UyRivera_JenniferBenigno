@@ -4,6 +4,7 @@ photos = [
     {"src": "img1.jpg", "caption": "CAT Activity"},
     {"src": "img2.jpg", "caption": "Christmas Party"},
     {"src": "img3.jpg", "caption": "Intramurals"},
+    {"src": "img4.jpg", "caption": "Freetime"},
 ]
 
 gallery = document.getElementById("photo-gallery")
