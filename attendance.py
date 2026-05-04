@@ -1,10 +1,11 @@
-from pyscript import document, display
+from pyscript import document
 import numpy as np
+import io
 import logging
 logging.getLogger('matplotlib').setLevel(logging.ERROR)
 
 import matplotlib
-matplotlib.use('module://matplotlib_pyodide.html5_canvas_backend')
+matplotlib.use('svg')
 import matplotlib.pyplot as plt
 
 days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
@@ -72,20 +73,20 @@ def log_absence(event):
     status        = document.getElementById('status-message')
 
     if absence_value == '' or absence_value is None:
-        status.innerHTML = 'Please enter a number.'
-        status.className = 'status-error'
+        status.innerHTML  = 'Please enter a number.'
+        status.className  = 'status status-error'
         return
 
     absence_count = int(absence_value)
 
     if absence_count < 0:
         status.innerHTML = 'Cannot be negative.'
-        status.className = 'status-error'
+        status.className = 'status status-error'
         return
 
     attendance_data[selected_day] = absence_count
     status.innerHTML = f'{selected_day}: {absence_count} absence(s) saved.'
-    status.className = 'status-success'
+    status.className = 'status status-success'
     document.getElementById('absence-input').value = ''
 
     update_table()
@@ -100,33 +101,37 @@ def show_graph(event):
     day_labels = np.array(days_of_week)
 
     fig, ax = plt.subplots(figsize=(8, 3.8))
-    fig.patch.set_facecolor('#0a120a')
-    ax.set_facecolor('#0f1a0f')
+    fig.patch.set_facecolor('#f6f9f4')
+    ax.set_facecolor('#ffffff')
 
     ax.plot(day_labels, absence_values,
-            color='#4a9e4a', marker='o', linewidth=2,
-            markersize=8, markerfacecolor='#0f1a0f',
-            markeredgecolor='#4a9e4a', markeredgewidth=2)
+            color='#5a8a5a', marker='o', linewidth=2,
+            markersize=8, markerfacecolor='#ffffff',
+            markeredgecolor='#5a8a5a', markeredgewidth=2)
 
     ax.fill_between(day_labels, absence_values,
-                    alpha=0.15, color='#4a9e4a')
+                    alpha=0.15, color='#5a8a5a')
 
-    ax.set_xlabel('Day', color='#4a7a4a', fontsize=9)
-    ax.set_ylabel('Absences', color='#4a7a4a', fontsize=9)
-    ax.tick_params(colors='#4a7a4a', labelsize=8)
+    ax.set_xlabel('Day', color='#7a8a7a', fontsize=9)
+    ax.set_ylabel('Absences', color='#7a8a7a', fontsize=9)
+    ax.tick_params(colors='#7a8a7a', labelsize=8)
 
     for spine in ax.spines.values():
-        spine.set_edgecolor('#1e3a1e')
+        spine.set_edgecolor('#e4ede0')
 
     ax.yaxis.set_major_locator(plt.MaxNLocator(integer=True))
-    ax.grid(axis='y', color='#1e3a1e', linestyle='--', linewidth=0.7)
+    ax.grid(axis='y', color='#e4ede0', linestyle='--', linewidth=0.7)
 
     plt.tight_layout()
 
-    graph_output = document.getElementById('graph-output')
-    graph_output.innerHTML = ''
-    display(fig, target='graph-output', append=False)
+    buf = io.BytesIO()
+    fig.savefig(buf, format='svg', bbox_inches='tight')
+    buf.seek(0)
+    svg_data = buf.read().decode('utf-8')
     plt.close(fig)
+
+    graph_output = document.getElementById('graph-output')
+    graph_output.innerHTML = svg_data
 
 update_table()
 update_progress()
